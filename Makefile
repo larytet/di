@@ -9,3 +9,6 @@ clean:
 
 load:
 	insmod sort.ko
+
+rm:
+	rmmod sort.ko	
