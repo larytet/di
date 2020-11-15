@@ -4,7 +4,9 @@
 #include<fcntl.h>
 #include<string.h>
 #include<unistd.h>
- 
+#include <ctype.h> 
+  
+
 #define BUFFER_LENGTH 256
 static char receive[BUFFER_LENGTH];
  
@@ -30,7 +32,8 @@ int main(){
       return errno;
    }
    printf("The received message is: [");
-   for i = 0;i < ret;i++ {
+   int i;
+   for (i = 0;i < ret;i++) {
        unsigned char c = receive[i];
        if isalnum(c){
            printf("%c", c);
