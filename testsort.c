@@ -51,6 +51,6 @@ int main(){
        }
    }
    printf("]\n");
-   // Let Linux kernel to drop the fd
+   // Let Linux kernel drop the fd
    return 0;
 }
