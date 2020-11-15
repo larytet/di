@@ -99,7 +99,6 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
     }
     copy_to_user(buffer, message, size_of_message);
 
-    // Cutting corners: the same thread calls write and read
     mutex_unlock(&sortMutex);
     return size_of_message;
 }
@@ -118,6 +117,7 @@ static int compare_bytes(const void *lhs, const void *rhs)
 
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset)
 {
+    // Cutting corners: the same thread calls write and read
     mutex_lock(&sortMutex);
     size_of_message = len;
     // Cutting corners: I ignore offset
