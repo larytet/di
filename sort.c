@@ -3,8 +3,9 @@
  *  write() - write buffer 
 *   read() - read back a sorted buffer 
  */
-#include <linux/module.h>	/* Needed by all modules */
-#include <linux/kernel.h>	/* Needed for KERN_INFO */
+#include <linux/module.h>	
+#include <linux/kernel.h>	
+#include <linux/mutex.h>	
 
 
 MODULE_LICENSE("GPL");
@@ -13,8 +14,12 @@ MODULE_DESCRIPTION("A simple module");
 MODULE_VERSION("0.1");
  
 static int    majorNumber;
+
+// Cutting corners: one thread at any time
+DEFINE_MUTEX(sortMutex);
 static char   message[256] = {0};
 static short  size_of_message;
+
 // Numebr of times the device is opened
 static int    numberOpens = 0;              
 static struct class*  sortClass  = NULL;
@@ -24,6 +29,7 @@ static int     dev_open(struct inode *, struct file *);
 static int     dev_release(struct inode *, struct file *);
 static ssize_t dev_read(struct file *, char *, size_t, loff_t *);
 static ssize_t dev_write(struct file *, const char *, size_t, loff_t *);
+
 
 static struct file_operations fops =
 {
@@ -62,15 +68,53 @@ int init_module(void)
         printk(KERN_ALERT "Failed to create the device\n");
         return PTR_ERR(sortDevice);
     }
+    mutex_init(sortMutex)
     printk(KERN_INFO "Sort: device class created correctly\n"); // Made it! device was initialized
 	return 0;
 }
 
-
-
 void cleanup_module(void)
 {
 	printk(KERN_INFO "Sort is going down\n");
+}
+
+static int dev_open(struct inode *inodep, struct file *filep){
+   numberOpens++;
+   return 0;
+}
+
+static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *offset){
+   int error_count = 0;
+   // copy_to_user has the format ( * to, *from, size) and returns 0 on success
+   // Cuttting corners: ignore errors
+   copy_to_user(buffer, message, size_of_message);
+   mutex_unlock(&sortMutex);
+   return 1
+}
+
+static int compare_bytes(const void *lhs, const void *rhs) {
+    u8 lhs_integer = *(u8 *)(lhs);
+    u8 rhs_integer = *(u8 *)(rhs);
+
+    if (lhs_integer < rhs_integer) return -1;
+    if (lhs_integer > rhs_integer) return 1;
+    return 0;
+}
+
+static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset){
+    mutex_lock(&sortMutex);
+    size_of_message = len;
+    // Cutting corners: I ignore offset
+    if (size_of_message > sizeof(message)) {
+        size_of_message = sizeof(message);
+    }
+    copy_from_user(message, buffer, size_of_message)
+    sort(message, size_of_message, sizeof(u8), &compare_bytes, NULL)
+}
+
+static int dev_release(struct inode *inodep, struct file *filep){
+   numberOpens--;
+   return 0;
 }
 
 static void __exit sort_exit(void){
