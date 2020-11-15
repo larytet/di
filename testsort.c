@@ -29,6 +29,17 @@ int main(){
       perror("Failed to read the message from the device.");
       return errno;
    }
-   printf("The received message is: [%s]\n", receive);
+   printf("The received message is: [");
+   for i = 0;i < ret;i++ {
+       unsigned char c = receive[i];
+       if isalnum(c){
+           printf("%c", c);
+       }
+       else {
+           printf("0x%x", c);
+       }
+
+   }
+   printf("]\n");
    return 0;
 }
