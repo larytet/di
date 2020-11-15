@@ -1,3 +1,5 @@
+// A simple demo application for the sort module
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<errno.h>
@@ -5,7 +7,7 @@
 #include<string.h>
 #include<unistd.h>
 #include <ctype.h> 
-  
+
 
 #define BUFFER_LENGTH 256
 static char receive[BUFFER_LENGTH];
@@ -36,12 +38,17 @@ int main(){
    for (i = 0;i < ret;i++) {
        unsigned char c = receive[i];
        if isalnum(c){
-           printf("%c", c);
+           printf("'%c'", c);
+       }
+       else if (c == 0x20) {
+           printf("' '");
        }
        else {
            printf("0x%x", c);
        }
-
+       if (i < (ret-1)) {
+           printf(",");
+       }
    }
    printf("]\n");
    return 0;
