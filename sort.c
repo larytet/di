@@ -10,6 +10,7 @@
 #include <linux/mutex.h>	
 #include <linux/fs.h>
 #include <linux/uaccess.h>
+#include <linux/sort.h>
 
 #define  DEVICE_NAME "sort"
 #define  CLASS_NAME  "sort"
@@ -45,7 +46,7 @@ static struct file_operations fops =
    .release = dev_release,
 };
 
-int init_module(void)
+int sort_init(void)
 {
 	printk(KERN_INFO "Sort is running\n");
 
@@ -77,11 +78,6 @@ int init_module(void)
     mutex_init(&sortMutex);
     printk(KERN_INFO "Sort: device class created correctly\n"); // Made it! device was initialized
 	return 0;
-}
-
-void cleanup_module(void)
-{
-	printk(KERN_INFO "Sort is going down\n");
 }
 
 static int dev_open(struct inode *inodep, struct file *filep){
