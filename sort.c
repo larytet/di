@@ -3,9 +3,13 @@
  *  write() - write buffer 
 *   read() - read back a sorted buffer 
  */
+#include <linux/init.h>
+#include <linux/device.h>
 #include <linux/module.h>	
 #include <linux/kernel.h>	
 #include <linux/mutex.h>	
+#include <linux/fs.h>
+#include <linux/uaccess.h>
 
 
 MODULE_LICENSE("GPL");
