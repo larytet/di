@@ -11,6 +11,8 @@
 #include <linux/fs.h>
 #include <linux/uaccess.h>
 
+#define  DEVICE_NAME "sort"
+#define  CLASS_NAME  "sort"
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Arkady");
@@ -72,7 +74,7 @@ int init_module(void)
         printk(KERN_ALERT "Failed to create the device\n");
         return PTR_ERR(sortDevice);
     }
-    mutex_init(sortMutex)
+    mutex_init(&sortMutex);
     printk(KERN_INFO "Sort: device class created correctly\n"); // Made it! device was initialized
 	return 0;
 }
