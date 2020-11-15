@@ -90,12 +90,11 @@ static int dev_open(struct inode *inodep, struct file *filep){
 }
 
 static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *offset){
-   int error_count = 0;
    // copy_to_user has the format ( * to, *from, size) and returns 0 on success
    // Cuttting corners: ignore errors
    copy_to_user(buffer, message, size_of_message);
    mutex_unlock(&sortMutex);
-   return 1
+   return 1;
 }
 
 static int compare_bytes(const void *lhs, const void *rhs) {
@@ -114,8 +113,8 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
     if (size_of_message > sizeof(message)) {
         size_of_message = sizeof(message);
     }
-    copy_from_user(message, buffer, size_of_message)
-    sort(message, size_of_message, sizeof(u8), &compare_bytes, NULL)
+    copy_from_user(message, buffer, size_of_message);
+    sort(message, size_of_message, sizeof(u8), &compare_bytes, NULL);
 }
 
 static int dev_release(struct inode *inodep, struct file *filep){
