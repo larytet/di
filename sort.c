@@ -1,7 +1,7 @@
 /*  
  *  sortc.c - a kernel module implementing a character device
  *  write() - write buffer 
-*   read() - read back a sorted buffer 
+ *  read() - read back a sorted buffer 
  */
 #include <linux/init.h>
 #include <linux/device.h>
