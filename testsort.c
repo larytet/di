@@ -11,6 +11,22 @@
 #define BUFFER_LENGTH 256
 static char receive[BUFFER_LENGTH];
 
+void nicePrint(unsigned char c) 
+{
+    if isalnum (c)
+    {
+        printf("'%c'", c);
+    }
+    else if (c == 0x20)
+    {
+        printf("' '");
+    }
+    else
+    {
+        printf("0x%x", c);
+    }
+}
+
 int main()
 {
     int ret, fd;
@@ -41,18 +57,7 @@ int main()
     for (i = 0; i < ret; i++)
     {
         unsigned char c = receive[i];
-        if isalnum (c)
-        {
-            printf("'%c'", c);
-        }
-        else if (c == 0x20)
-        {
-            printf("' '");
-        }
-        else
-        {
-            printf("0x%x", c);
-        }
+        nicePrint(c);
         if (i < (ret - 1))
         {
             printf(",");
