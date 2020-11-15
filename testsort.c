@@ -17,7 +17,7 @@ int main(){
       perror("Failed to open the device...");
       return errno;
    }
-   unsigned char *s = [0x0a, ‘D’, ‘e’, ‘e’, ‘p’, ‘ ‘, ‘I’, ‘n’, ‘s’, ‘t’, ‘i’, ‘n’, ‘c’, ‘t’, 0x0a];
+   unsigned char s[] = {0x0a, ‘D’, ‘e’, ‘e’, ‘p’, ‘ ‘, ‘I’, ‘n’, ‘s’, ‘t’, ‘i’, ‘n’, ‘c’, ‘t’, 0x0a};
    ret = write(fd, s, strlen(s));
    if (ret < 0){
       perror("Failed to write the message to the device.");
