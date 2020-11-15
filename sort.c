@@ -84,6 +84,7 @@ int sort_init(void)
 
 static int dev_open(struct inode *inodep, struct file *filep)
 {
+    // Cutting corners - not an atomic
     numberOpens++;
     return 0;
 }
