@@ -30,7 +30,6 @@ void nicePrint(unsigned char c)
 int main()
 {
     int ret, fd;
-    char stringToSend[BUFFER_LENGTH];
     printf("Starting sort device...\n");
     fd = open("/dev/sort", O_RDWR);
     if (fd < 0)
