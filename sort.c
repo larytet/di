@@ -126,6 +126,9 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
     }
     copy_from_user(message, buffer, size_of_message);
     sort(message, size_of_message, sizeof(u8), &compare_bytes, NULL);
+    // I could modify the user buffer right here, but it does not fit write()
+    // having such a side effect. Let the application call read()
+    // It will allow the application use const data int the call to write() 
     return size_of_message;
 }
 
